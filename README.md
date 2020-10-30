@@ -1,2 +1,7 @@
 # covid19-new-cases-time-constant
-plot Covid-19 new cases time constant vs "doubling every 14 days"
+Quick and dirty script that plots the Covid-19 new cases time constant.
+Just `pip install pandas matplotib` and run the script.
+
+Without downloading the script: `curl https://raw.githubusercontent.com/tovam/covid19-new-cases-time-constant/master/covid19-time-constant.py | python -`
+
+The output is the path of the written PNG file.
