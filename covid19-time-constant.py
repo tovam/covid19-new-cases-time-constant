@@ -60,7 +60,7 @@ def plot_graph(get_formatted_data, filename, new_cases_avg=7, time_constant_avg=
 	bbox = dict(fc='#fbb', ec='none',  alpha=0.8)
 	ax2.text(1.3, -0.008, 'New cases per day constant', fontsize=9, bbox=bbox)
 	ax2.text(1.3, 0.063-0.018, 'New cases per day double every 14 days', fontsize=9, bbox=bbox)
-	totdays = -int(date_str.split('-')[2])-1
+	totdays = -int(date_str.split('-')[2])+0.5
 	xticks = []
 	for i,ym in enumerate(np.unique(np.array(list(map(lambda x:x[:7], newindex))))):
 	    y,m = list(map(int,ym.split('-')))
