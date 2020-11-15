@@ -95,6 +95,7 @@ def get_formatted_data():
 	global dataurl
 	data = pd.read_csv(dataurl)
 	data = data[data.maille_code=='FRA']
+	data = data[data.date.str.match('\d{4}-\d{1,2}-\d{1,2}')]
 	data = data[data.cas_confirmes.notnull()]
 	data = data.groupby(['date'])['cas_confirmes'].max()
 	return data
