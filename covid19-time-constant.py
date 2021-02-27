@@ -13,7 +13,7 @@ try:
 	MonkeyPatch.patch_fromisoformat()
 except:pass
 
-dataurl = 'https://raw.githubusercontent.com/opencovid19-fr/data/master/dist/chiffres-cles.csv'
+dataurl = 'https://public.opendatasoft.com/explore/dataset/covid19-france-vue-ensemble/download/?format=csv&timezone=Europe/Berlin&lang=fr&use_labels_for_header=true&csv_separator=%3B'
 new_cases_avg = 7     # average window for new cases per day
 time_constant_avg = 3 # average window for the time constant
 # (_, output_filename) = tempfile.mkstemp('.png')
@@ -93,11 +93,9 @@ def get_formatted_data():
 		2020-01-28          4.0
 	"""
 	global dataurl
-	data = pd.read_csv(dataurl)
-	data = data[data.maille_code=='FRA']
-	data = data[data.date.str.match('\d{4}-\d{1,2}-\d{1,2}')]
-	data = data[data.cas_confirmes.notnull()]
-	data = data.groupby(['date'])['cas_confirmes'].max()
+	data = pd.read_csv(dataurl, ';')
+	data = data.sort_values('Date')[['Date', 'Cas confirmés']].groupby('Date')['Cas confirmés'].max()
+	data = data.rename('cas_confirmes').rename_axis('date')
 	return data
 
 print(plot_graph(get_formatted_data, output_filename, new_cases_avg, time_constant_avg))
