@@ -7,6 +7,7 @@ from datetime import datetime,timedelta
 from calendar import monthrange
 import tempfile
 import sys
+import requests
 try:
 	# pip install backports-datetime-fromisoformat
 	from backports.datetime_fromisoformat import MonkeyPatch
@@ -98,4 +99,8 @@ def get_formatted_data():
 	data = data.rename('cas_confirmes').rename_axis('date')
 	return data
 
-print(plot_graph(get_formatted_data, output_filename, new_cases_avg, time_constant_avg))
+filename = plot_graph(get_formatted_data, output_filename, new_cases_avg, time_constant_avg)
+print(filename)
+
+if len(sys.argv) > 1:
+	requests.post(sys.argv[1], files={'covid.png': open(filename, 'rb')})
