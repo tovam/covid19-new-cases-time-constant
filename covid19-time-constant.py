@@ -56,19 +56,21 @@ def plot_graph(get_formatted_data, filename, new_cases_avg=7, time_constant_avg=
 	ax2.tick_params(axis='y', colors='#d62728')
 	ax2.set_ylim(-0.35, 0.35)
 	ax2.set_xlim(left=-1)
-	ax2.hlines(y=0, xmin=ax2.get_xlim()[0], xmax=ax2.get_xlim()[1], linewidth=1, color='#ffb0b0', linestyles='dashed')
-	ax2.hlines(y=0.05, xmin=ax2.get_xlim()[0], xmax=ax2.get_xlim()[1], linewidth=1, color='#d62728', linestyles='dashed')
 	bbox = dict(fc='#fbb', ec='none',  alpha=0.8)
-	ax2.text(1.3, -0.008, 'New cases per day constant', fontsize=9, bbox=bbox)
-	ax2.text(1.3, 0.063-0.018, 'New cases per day double every 14 days', fontsize=9, bbox=bbox)
+	ax2.hlines(y=0, xmin=ax2.get_xlim()[0], xmax=ax2.get_xlim()[1], linewidth=1, color='#ffb0b0', linestyles='dashed')
+	ax2.text(1.3, -0.0045, 'New cases per day constant', fontsize=9, bbox=bbox)
+	for z in [14, 7, 4]:
+		line_y = 14*0.0495/z
+		ax2.hlines(y=line_y, xmin=ax2.get_xlim()[0], xmax=ax2.get_xlim()[1], linewidth=1, color='#d62728', linestyles='dashed')
+		ax2.text(1.3, line_y-0.0045, 'New cases per day double every %d days'%z, fontsize=9, bbox=bbox)
 	totdays = -int(date_str.split('-')[2])+0.5
 	xticks = []
 	for i,ym in enumerate(np.unique(np.array(list(map(lambda x:x[:7], newindex))))):
-	    y,m = list(map(int,ym.split('-')))
-	    monthlength = monthrange(y,m)[1]
-	    if totdays>0:xticks.append((totdays+int(monthlength/2), '%d-%02d'%(y,m)))
-	    ax1.axvspan(totdays, totdays+monthlength, facecolor=['white','lightgrey'][i%2], alpha=0.25)
-	    totdays += monthlength
+		y,m = list(map(int,ym.split('-')))
+		monthlength = monthrange(y,m)[1]
+		if totdays>0:xticks.append((totdays+int(monthlength/2), '%d-%02d'%(y%100,m)))
+		ax1.axvspan(totdays, totdays+monthlength, facecolor=['white','lightgrey'][i%2], alpha=0.25)
+		totdays += monthlength
 	plt.xticks(*zip(*xticks))
 
 	legend_1 = ax1.legend(loc=2)
@@ -78,7 +80,7 @@ def plot_graph(get_formatted_data, filename, new_cases_avg=7, time_constant_avg=
 
 	plt.title('Covid-19 in France: new cases time constant from %s to %s\n'%(sdate, edate))
 	ax1.set_xlabel('Date')
-	ax1.annotate('Source: '+dataurl, xy=(2, 2), xycoords='figure pixels', annotation_clip=False)
+	ax1.annotate('Source: '+dataurl, xy=(2, 6), xycoords='figure pixels', annotation_clip=False, size=8)
 	plt.savefig(filename)
 	plt.clf()
 	return filename
