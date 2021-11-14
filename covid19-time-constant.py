@@ -45,7 +45,7 @@ def plot_graph(get_formatted_data, filename, new_cases_avg=7, time_constant_avg=
 
 	# plotting ln(diff of total cases)
 	log_diff = np.log(diff_total_cases_avg)
-	(log_diff*0.1).plot(label='ln(New cases) (/10)')
+	#(log_diff*0.1).plot(label='ln(New cases) (/10)')
 
 	# calculating time constant
 	diff_log_diff = log_diff.diff().rolling(time_constant_avg, center=True).mean()
