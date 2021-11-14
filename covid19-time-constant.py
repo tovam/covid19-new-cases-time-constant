@@ -36,16 +36,16 @@ def plot_graph(get_formatted_data, filename, new_cases_avg=7, time_constant_avg=
 	total_cases = total_cases.fillna(method='ffill')
 
 	# plotting total cases
-	ax1 = total_cases.plot(label='Total cases')
+	ax1 = (total_cases*0.000001).plot(label='Total cases (/1M)')
 
 	# plotting diff of total cases
 	diff_total_cases = total_cases.diff()[1:].clip(lower=1) # set at least 1 new confirmed case per day to have a nice log
 	diff_total_cases_avg = diff_total_cases.rolling(new_cases_avg, center=True).mean()
-	(diff_total_cases_avg*100).plot(label='New cases (*100)')
+	(diff_total_cases_avg*0.0001).plot(label='New cases (/10k)')
 
 	# plotting ln(diff of total cases)
 	log_diff = np.log(diff_total_cases_avg)
-	(log_diff*100000).plot(label='ln(New cases) (*1e5)')
+	(log_diff*0.1).plot(label='ln(New cases) (/10)')
 
 	# calculating time constant
 	diff_log_diff = log_diff.diff().rolling(time_constant_avg, center=True).mean()
