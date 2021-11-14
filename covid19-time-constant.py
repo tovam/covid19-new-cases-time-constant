@@ -41,7 +41,7 @@ def plot_graph(get_formatted_data, filename, new_cases_avg=7, time_constant_avg=
 	# plotting diff of total cases
 	diff_total_cases = total_cases.diff()[1:].clip(lower=1) # set at least 1 new confirmed case per day to have a nice log
 	diff_total_cases_avg = diff_total_cases.rolling(new_cases_avg, center=True).mean()
-	(diff_total_cases_avg*10).plot(label='New cases (*10)')
+	(diff_total_cases_avg*100).plot(label='New cases (*100)')
 
 	# plotting ln(diff of total cases)
 	log_diff = np.log(diff_total_cases_avg)
